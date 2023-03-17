@@ -47,6 +47,20 @@ export default function Home({ posts }: Props) {
                     className="w-full h-full object-cover brightness-75 group-hover:brightness-100 duration-300 group-hover::scale-110"
                   />
                 </div>
+                <div className="h-2/5 w-full flex flex-col justify-center">
+                  <div className="flex justify-between items-center px-4 py-1 border-b-[1px] border-b-gray-500">
+                    <p>{el.title}</p>
+                    <img
+                      className="w-12 h-12 rounded-full object-cover"
+                      src={urlFor(el.author.image).url()}
+                      alt="author-image"
+                    />
+                  </div>
+                  <p className="py-2 px-4 text-base">
+                    {el.description.substring(0, 60)}... by -{" "}
+                    <span className="font-semibold">{el.author.name}</span>
+                  </p>
+                </div>
               </div>
             </Link>
           ))}
