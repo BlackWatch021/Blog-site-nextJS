@@ -7,12 +7,14 @@ import Footer from "../components/Footer";
 import { sanityClient, urlFor } from "../sanity";
 import { Post } from "../types";
 import Image from "next/image";
+import Link from "next/link";
 
 interface Props {
   posts: [Post];
 }
 
 export default function Home({ posts }: Props) {
+  console.log(posts[0]);
   return (
     <div>
       <Head>
@@ -32,15 +34,21 @@ export default function Home({ posts }: Props) {
         </div>
         {/* ============ Banner-Bottom End here ======= */}
         {/* ============ Post Part Start here ========= */}
-        <div className="max-w-7xl mx-auto py-20 px-4">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 py-6">
           {posts.map((el) => (
-            <div>
-              <Image
-                width={380}
-                height={350}
-                src={urlFor(el.mainImage).url()}
-              />
-            </div>
+            <Link key={el._id} href={`/posts/${el.slug.current}`}>
+              <div className="border-[1px] border-secondaryColor border-opacity-40 h-[450px] group">
+                <div className="h-3/5 w-full overflow-hidden">
+                  <Image
+                    width={380}
+                    height={350}
+                    src={urlFor(el.mainImage).url()!}
+                    alt="main-image"
+                    className="w-full h-full object-cover brightness-75 group-hover:brightness-100 duration-300 group-hover::scale-110"
+                  />
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
         {/* ============ Post Part End here =========== */}
