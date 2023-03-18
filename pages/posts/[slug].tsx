@@ -7,6 +7,7 @@ import Header from "../../components/Header";
 import { sanityClient, urlFor } from "../../sanity";
 import { Post } from "../../types";
 import { useForm, SubmitHandler } from "react-hook-form";
+import comment from "../../personal-blog/schemas/comment";
 
 interface Props {
   post: Post;
@@ -175,6 +176,20 @@ const Slug = ({ post }: Props) => {
               Comment
             </button>
           </form>
+
+          {/* comments */}
+          <div className="w-full flex flex-col p-10 my-10 auto shadow-bgColor shadow-lg space-y-2">
+            <h3 className="text-3xl font-titleFont font-semibold">Comments</h3>
+            <hr />
+            {post.comments.map((el) => (
+              <div key={el._id}>
+                <p>
+                  <span className="text-secondaryColor">{el.name}</span>{" "}
+                  {el.comment}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
       <Footer />
@@ -213,6 +228,7 @@ export const getStaticProps = async ({ params }: any) => {
     name,
     image,
   },
+  "comments":*[_type == "comment" && post._ref == ^._id && approved == true],
   description,
   mainImage,
   slug,body
