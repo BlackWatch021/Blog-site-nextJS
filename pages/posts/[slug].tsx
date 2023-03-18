@@ -1,4 +1,4 @@
-import { PortableText } from "@portabletext/react";
+import PortableText from "react-portable-text";
 import { GetStaticProps } from "next";
 import React from "react";
 import Footer from "../../components/Footer";
@@ -51,9 +51,48 @@ const Slug = ({ post }: Props) => {
                 process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "beey9nk8"
               }
               content={post.body}
+              serializers={{
+                h1: (props: any) => (
+                  <h1
+                    className="text-3xl font-bold my-5 font-titleFont"
+                    {...props}
+                  />
+                ),
+                h2: (props: any) => (
+                  <h2
+                    className="text-2xl font-bold my-5 font-titleFont"
+                    {...props}
+                  />
+                ),
+                h3: (props: any) => (
+                  <h3
+                    className="text-2xl font-bold my-5 font-titleFont"
+                    {...props}
+                  />
+                ),
+                li: ({ children }: any) => (
+                  <li className="ml-4 list-disc">{children}</li>
+                ),
+                link: ({ href, children }: any) => (
+                  <a href={href} className="text-cyan-500 hover:underline">
+                    {children}
+                  </a>
+                ),
+              }}
             />
           </div>
         </article>
+        <hr className="max-w-lg my-5 mx-auto border[1px] border-secondaryColor" />
+        <div>
+          <p className="text-xs text-secondaryColor uppercase font-titleFont font-bold">
+            {" "}
+            Enjoyed this article
+          </p>
+          <h3 className="font-titleFont text-3xl font-bold">
+            Leave a Comment below!
+          </h3>
+          <hr className="py-3 mt-2" />
+        </div>
       </div>
       <Footer />
     </div>
