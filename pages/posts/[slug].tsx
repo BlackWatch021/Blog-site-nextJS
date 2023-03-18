@@ -1,3 +1,4 @@
+import { useState } from "react";
 import PortableText from "react-portable-text";
 import { GetStaticProps } from "next";
 import React from "react";
@@ -5,12 +6,41 @@ import Footer from "../../components/Footer";
 import Header from "../../components/Header";
 import { sanityClient, urlFor } from "../../sanity";
 import { Post } from "../../types";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 interface Props {
   post: Post;
 }
 
+type Inputs = {
+  _id: string;
+  name: string;
+  email: string;
+  comment: string;
+};
+
 const Slug = ({ post }: Props) => {
+  const [submitted, setSubmitted] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Inputs>();
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    fetch("/api/createComment", {
+      method: "POST",
+      body: JSON.stringify(data),
+    })
+      .then(() => {
+        setSubmitted(true);
+      })
+      .catch((err) => {
+        setSubmitted(false);
+      });
+  };
+
   return (
     <div>
       <Header />
@@ -21,7 +51,7 @@ const Slug = ({ post }: Props) => {
         alt="blog-main-image"
       />
       {/* Main article/blog */}
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-3xl mx-auto mb-10">
         <article className="w-full mx-auto p-5 bg-secondaryColor/10">
           <h1 className="font-titleFont font-medium text-[32px] text-primary border-b-[1px] border-b-cyan-800 mt-10 mb-3">
             {post.title}
@@ -92,6 +122,59 @@ const Slug = ({ post }: Props) => {
             Leave a Comment below!
           </h3>
           <hr className="py-3 mt-2" />
+          {/* coment id */}
+          <input
+            {...register("_id")}
+            type="hidden"
+            name="_id"
+            value={post._id}
+          />
+
+          {/* Comment form */}
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mt-7 flex flex-col gap-6"
+          >
+            <label className="flex flex-col">
+              <span className="font-titleFont font-semibold text-base">
+                Name
+              </span>
+              <input
+                type="text"
+                placeholder="Enter your name"
+                {...register("name", { required: true })}
+                className=" text-base placeholder:text-sm border-b-[1px] border-secondaryColor py-1 px-4 outline-none focus-within:shadow-xl shadow-secondaryColor"
+              />
+            </label>
+            <label className="flex flex-col">
+              <span className="font-titleFont font-semibold text-base">
+                Email
+              </span>
+              <input
+                type="text"
+                placeholder="Enter your email"
+                {...register("email", { required: true })}
+                className=" text-base placeholder:text-sm border-b-[1px] border-secondaryColor py-1 px-4 outline-none focus-within:shadow-xl shadow-secondaryColor"
+              />
+            </label>
+            <label className="flex flex-col">
+              <span className="font-titleFont font-semibold text-base">
+                Comment
+              </span>
+              <textarea
+                {...register("comment", { required: true })}
+                placeholder="Enter your Comment"
+                rows={6}
+                className=" text-base placeholder:text-sm border-b-[1px] border-secondaryColor py-1 px-4 outline-none focus-within:shadow-xl shadow-secondaryColor"
+              />
+            </label>
+            <button
+              type="submit"
+              className="w-full bg-bgColor text-white text-base font-titleFont font-semibold tracking-wide uppercase py-2 rounded-sm hover:bg-secondaryColor duration-300"
+            >
+              Comment
+            </button>
+          </form>
         </div>
       </div>
       <Footer />
@@ -121,7 +204,7 @@ export const getStaticPaths = async () => {
   };
 };
 
-export const getStaticProps = async ({ params }) => {
+export const getStaticProps = async ({ params }: any) => {
   const query = `*[_type == "post" && slug.current == $slug][0]{
   _id,
   publishedAt,
