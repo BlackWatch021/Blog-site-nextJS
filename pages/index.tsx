@@ -34,7 +34,7 @@ export default function Home({ posts }: Props) {
         </div>
         {/* ============ Banner-Bottom End here ======= */}
         {/* ============ Post Part Start here ========= */}
-        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 py-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6 py-6 px-4">
           {posts.map((el) => (
             <Link key={el._id} href={`/posts/${el.slug.current}`}>
               <div className="border-[1px] border-secondaryColor border-opacity-40 h-[450px] group">
@@ -49,7 +49,9 @@ export default function Home({ posts }: Props) {
                 </div>
                 <div className="h-2/5 w-full flex flex-col justify-center">
                   <div className="flex justify-between items-center px-4 py-1 border-b-[1px] border-b-gray-500">
-                    <p>{el.title}</p>
+                    <p className="font-titleFont text-xl uppercase font-bold">
+                      {el.title}
+                    </p>
                     <img
                       className="w-12 h-12 rounded-full object-cover"
                       src={urlFor(el.author.image).url()}
