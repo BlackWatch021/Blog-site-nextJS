@@ -8,6 +8,15 @@ const Header = () => {
 
   let sessionData;
 
+  if (session) {
+    sessionData = session?.user!.image;
+  } else {
+    sessionData = undefined;
+  }
+
+  console.log("session Data", sessionData);
+  console.log("session", session);
+
   return (
     <div className="w-full h-20 border-b-[1px] border-b-black font-titleFont sticky top-0 bg-white z-50 px-4">
       <div className="max-w-7xl h-full mx-auto flex justify-between items-center">
@@ -27,10 +36,10 @@ const Header = () => {
         </div>
         <div className="flex items-center gap-8 text-lg">
           <div className="flex items-center gap-1">
-            {session && (
+            {sessionData && (
               <img
                 className="w-8 h-8 rounded-full"
-                src={session ? session?.user!.image : ""}
+                src={sessionData ? sessionData : ""}
                 alt="logo"
               />
             )}
