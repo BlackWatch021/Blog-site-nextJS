@@ -7,7 +7,7 @@ import Header from "../../components/Header";
 import { sanityClient, urlFor } from "../../sanity";
 import { Post } from "../../types";
 import { useForm, SubmitHandler } from "react-hook-form";
-import comment from "../../personal-blog/schemas/comment";
+// import comment from "../../personal-blog/schemas/comment";
 import { useSession } from "next-auth/react";
 
 interface Props {
