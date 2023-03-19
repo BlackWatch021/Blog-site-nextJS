@@ -14,7 +14,6 @@ interface Props {
 }
 
 export default function Home({ posts }: Props) {
-  console.log(posts[0]);
   return (
     <div>
       <Head>
